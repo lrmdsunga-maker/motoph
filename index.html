@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MotorPH – The Filipino’s Choice</title>
+  <style>
+    :root{--orange:#f97316;--red:#dc2626;--ink:#111827;--muted:#6b7280;--bg:#fafafa;--card:#ffffff}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#222}
+    header{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,var(--orange),var(--red));color:#fff}
+    header .row{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem}
+    header h1{margin:0;font-size:1.25rem;font-weight:800;letter-spacing:.2px}
+    nav a{color:#fff;text-decoration:none;margin-left:1.25rem;font-weight:700}
+    nav a:hover{opacity:.9}
+    .container{max-width:1200px;margin:auto;padding:2rem 1.25rem}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;background:linear-gradient(90deg,#fff,#fff5f5);border-bottom:1px solid #eee}
+    .hero h2{font-size:2.25rem;margin:.25rem 0 1rem;font-weight:900}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:#111827;color:#fff;border:none;border-radius:.75rem;padding:.7rem 1rem;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#fff;color:#111827;border:1px solid #e5e7eb}
+    .btn.small{padding:.45rem .7rem;border-radius:.55rem;font-weight:700}
+    .catalog h2{font-size:1.75rem;margin:0 0 1rem}
+    .filters{display:flex;gap:1rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
+    .card{background:var(--card);border-radius:1rem;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column}
+    .card img{width:100%;height:180px;object-fit:cover;cursor:pointer}
+    .card .content{padding:1rem;display:flex;flex-direction:column;gap:.25rem;flex:1}
+    .price{font-weight:800;color:#b91c1c}
+    .muted{color:var(--muted);font-size:.92rem}
+    footer{background:#111;color:#fff;margin-top:2rem}
+    footer .row{max-width:1200px;margin:auto;padding:2rem 1.25rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    footer h4{margin:.25rem 0}
+    footer p{margin:.25rem 0;color:#cbd5e1}
+    .pill{display:inline-block;background:#eef2ff;color:#3730a3;padding:.25rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700}
+    .cart-btn{position:relative}
+    .cart-count{position:absolute;top:-8px;right:-10px;background:#ef4444;color:#fff;border-radius:999px;font-size:.7rem;padding:.1rem .4rem;font-weight:800}
+    .drawer{position:fixed;inset:0;display:none}
+    .drawer.open{display:block}
+    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(520px,100%);background:#fff;box-shadow:-2px 0 24px rgba(0,0,0,.2);display:flex;flex-direction:column}
+    .drawer header{position:sticky;top:0;background:#fff;color:#111;border-bottom:1px solid #eee}
+    .drawer .body{padding:1rem;overflow:auto;flex:1}
+    .line{display:flex;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px dashed #eee}
+    .line img{width:72px;height:56px;object-fit:cover;border-radius:.5rem}
+    .qty{display:inline-flex;border:1px solid #e5e7eb;border-radius:.5rem}
+    .qty button{background:#fff;border:0;padding:.25rem .5rem;cursor:pointer;font-weight:800}
+    .qty span{min-width:32px;display:inline-flex;align-items:center;justify-content:center}
+    .summary{padding:1rem;border-top:1px solid #eee}
+    .summary .row{display:flex;justify-content:space-between;margin:.25rem 0}
+    .modal{position:fixed;inset:0;display:none}
+    .modal.show{display:grid;place-items:center}
+    .modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+    .modal .card{position:relative;max-width:min(920px,95vw);display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:1rem;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+    .modal .card img{height:100%;max-height:520px;object-fit:cover}
+    .close-x{position:absolute;top:10px;right:10px;background:#fff;border-radius:999px;border:1px solid #eee;width:32px;height:32px;display:grid;place-items:center;cursor:pointer}
+    section.hidden{display:none}
+    form label{display:block;font-size:.9rem;font-weight:700;margin:.5rem 0 .25rem}
+    form input, form select, form textarea{width:100%;padding:.6rem .7rem;border:1px solid #e5e7eb;border-radius:.6rem}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .notice{background:#fef3c7;border:1px solid #f59e0b;color:#7c2d12;border-radius:.75rem;padding:.6rem .8rem;font-size:.9rem}
+    .success{background:#ecfdf5;border:1px solid #10b981;color:#065f46;border-radius:.75rem;padding:.6rem .8rem;font-size:.95rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <h1>MotorPH</h1>
+      <nav>
+        <a href="#home" data-link>Home</a>
+        <a href="#catalog" data-link>Motorcycles</a>
+        <a href="#contact" data-link>Contact</a>
+        <a href="#cart" class="cart-btn" id="openCart" title="View cart">🛒<span id="cartCount" class="cart-count" style="display:none">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="hero container">
+    <div>
+      <span class="pill">The Filipino’s Choice</span>
+      <h2>Reliable scooters for the everyday Filipino</h2>
+      <p class="muted">Affordable cash prices and flexible installment terms. Find your perfect ride for Metro Manila traffic, weekend errands, and family transport.</p>
+      <div style="display:flex;gap:.6rem;margin-top:1rem">
+        <a class="btn" href="#catalog" data-link>Browse Models</a>
+        <a class="btn secondary" href="#contact" data-link>Talk to Sales</a>
+      </div>
+    </div>
+    <div>
+      <img src="Suzuki-7.jpg" alt="Suzuki Katana" style="width:100%;border-radius:1rem;box-shadow:0 10px 28px rgba(0,0,0,.15)"/>
+    </div>
+  </section>
+
+  <section id="catalogSec" class="container">
+    <div class="catalog">
+      <h2>Our Models</h2>
+      <div class="filters">
+        <input id="search" placeholder="Search model… (e.g., Katana)"/>
+        <select id="sort">
+          <option value="default">Sort: Featured</option>
+          <option value="low">Price: Low → High</option>
+          <option value="high">Price: High → Low</option>
+        </select>
+      </div>
+      <div id="grid" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="contactSec" class="container hidden">
+    <h2>Contact Us</h2>
+    <p class="muted">Have a question about models, pricing, or financing? Send us a message and our team will get back to you shortly.</p>
+    <form id="contactForm" style="max-width:760px">
+      <div class="grid-2">
+        <div>
+          <label for="cname">Full Name</label>
+          <input id="cname" required placeholder="Juan Dela Cruz" />
+        </div>
+        <div>
+          <label for="cemail">Email</label>
+          <input id="cemail" type="email" required placeholder="you@email.com" />
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label for="cphone">Phone</label>
+          <input id="cphone" required placeholder="09XX-XXX-XXXX" />
+        </div>
+        <div>
+          <label for="csubject">Subject</label>
+          <input id="csubject" required placeholder="Inquiry about PCX160" />
+        </div>
+      </div>
+      <label for="cmsg">Message</label>
+      <textarea id="cmsg" rows="5" required placeholder="Tell us more…"></textarea>
+      <div class="notice" style="margin:.75rem 0">This is a demo site. Submissions are simulated and will show a success message.</div>
+      <button class="btn" type="submit">Send Message</button>
+      <div id="contactOk" style="margin-top:10px;display:none" class="success">✅ Thanks! We received your message. Expect a reply within 1 business day.</div>
+    </form>
+  </section>
+
+  <div id="drawer" class="drawer" aria-hidden="true">
+    <div class="overlay" id="closeCart"></div>
+    <div class="panel">
+      <header class="row" style="justify-content:space-between">
+        <strong>🛒 Your Cart</strong>
+        <button class="btn small secondary" id="closeCartBtn">Close</button>
+      </header>
+      <div id="cartBody" class="body"></div>
+      <div class="summary">
+        <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
+        <div class="row"><span>Shipping</span><span class="muted">Calculated at checkout</span></div>
+        <div class="row"><span>Total</span><strong id="total">₱0.00</strong></div>
+        <div style="display:flex;gap:.5rem;margin-top:.5rem">
+          <button class="btn secondary" id="clearCart">Clear</button>
+          <a class="btn" href="#checkout" id="goCheckout" data-link>Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="checkoutSec" class="container hidden">
+    <h2>Checkout</h2>
+    <div id="emptyCheckout" class="notice" style="display:none">Your cart is empty. Add a motorcycle first from the catalog.</div>
+    <div id="checkoutWrap" style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem">
+      <form id="checkoutForm">
+        <h3>Customer</h3>
+        <div class="grid-2">
+          <div><label>Full Name</label><input id="name" required></div>
+          <div><label>Email</label><input id="email" type="email" required></div>
+        </div>
+        <div class="grid-2">
+          <div><label>Phone</label><input id="phone" required></div>
+          <div><label>Payment Method</label>
+            <select id="payment"><option>Cash on Delivery</option><option>GCash</option><option>Bank Transfer</option></select>
+          </div>
+        </div>
+        <h3>Shipping Address</h3>
+        <label>Street</label><input id="street" required>
+        <div class="grid-2">
+          <div><label>City / Municipality</label><input id="city" required></div>
+          <div><label>Province</label><input id="province" required></div>
+        </div>
+        <div class="grid-2">
+          <div><label>ZIP</label><input id="zip" required></div>
+          <div><label>Notes (optional)</label><input id="notes" placeholder="Gate instructions, landmark, etc."></div>
+        </div>
+        <div class="notice" style="margin:.75rem 0">Demo only: No real payment is processed. You’ll see a confirmation screen with a generated order number.</div>
+        <button class="btn" type="submit">Place Order</button>
+        <div id="orderOk" style="display:none;margin-top:12px" class="success"></div>
+      </form>
+      <aside>
+        <div style="background:#fff;border:1px solid #eee;border-radius:1rem;padding:1rem">
+          <h3 style="margin-top:0">Order Summary</h3>
+          <div id="summary"></div>
+          <div style="display:flex;justify-content:space-between;border-top:1px solid #eee;margin-top:.5rem;padding-top:.5rem">
+            <strong>Total</strong>
+            <strong id="summaryTotal">₱0.00</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="overlay" id="closeModal"></div>
+    <div class="card">
+      <img id="mImg" alt="Product"/>
+      <div style="padding:1.25rem;display:flex;flex-direction:column;gap:.5rem">
+        <div class="close-x" id="x">✕</div>
+        <h3 id="mName" style="margin:0"></h3>
+        <div id="mPrice" class="price"></div>
+        <p id="mDesc" class="muted"></p>
+        <div>
+          <span class="muted">Displacement:</span> <strong id="mCc"></strong>
+          <span class="muted" style="margin-left:1rem">Brakes:</span> <strong id="mBrake"></strong>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:auto">
+          <button class="btn" id="mAdd">Add to Cart</button>
+          <button class="btn secondary" id="mGoCheckout">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="contact" class="footer">
+    <div class="row">
+      <div>
+        <h4>Office Hours</h4>
+        <p>8:30 AM – 5:30 PM, Monday to Saturday</p>
+      </div>
+      <div>
+        <h4>Address</h4>
+        <p>7 Jupiter Avenue cor. F. Sandoval Jr., Bagong Nayon, Quezon City</p>
+      </div>
+      <div>
+        <h4>Sales</h4>
+        <p>(028) 911‑5071 / 911‑5072 / 911‑5073</p>
+        <p>Email: corporate@motorph.com</p>
+      </div>
+    </div>
+    <p style="text-align:center;color:#94a3b8;padding-bottom:1rem">© 2024 MotorPH. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      {id:'katana', name:'Suzuki Katana', price:166900, cc:999, brake:'ABS + TC', img:'Suzuki-7.jpg', desc:'Aggressive naked sport with 999cc inline-four power and suite of rider aids.'},
+      {id:'gsx8tt', name:'Suzuki GSX-8TT', price:125900, cc:776, brake:'ABS + TC', img:'suzuki-gsx-8tt-97184.avif', desc:'Adventure-ready twin with long-travel suspension and modern electronics.'},
+      {id:'rocket3', name:'Triumph Rocket III', price:149900, cc:2294, brake:'ABS', img:'Triumph-Rocket-III-motorcycle-2005.webp', desc:'Legendary cruiser torque with premium finishing and comfort.'},
+      {id:'custom', name:'Custom Model', price:131900, cc:160, brake:'ABS/CBS', img:'U7NE4JOSA757H7EYU44LJEESSA.avif', desc:'Distinctive design with city-smart efficiency and comfort.'}
+    ];
+    const peso = v => new Intl.NumberFormat('en-PH', {style:'currency', currency:'PHP'}).format(v);
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const CART_KEY = 'motorph_cart_v1';
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCartCount(); }
+    const grid = $('#grid'); const search = $('#search'); const sortSel = $('#sort');
+    function renderCatalog(){
+      let items = PRODUCTS.slice();
+      const term = (search.value||'').toLowerCase().trim();
+      if(term) items = items.filter(p=> p.name.toLowerCase().includes(term));
+      if(sortSel.value==='low') items.sort((a,b)=>a.price-b.price);
+      if(sortSel.value==='high') items.sort((a,b)=>b.price-a.price);
+      grid.innerHTML = items.map(p=> `
+        <article class="card">
+          <img src="${p.img}" alt="${p.name}" data-open="${p.id}"/>
+          <div class="content">
+            <h3 style="margin:0">${p.name}</h3>
+            <div class="muted">${p.cc}cc • ${p.brake}</div>
+            <div class="price">${peso(p.price)}</div>
+            <div style="display:flex;gap:.5rem;margin-top:auto">
+              <button class="btn small" data-add="${p.id}">Add to Cart</button>
+              <button class="btn small secondary" data-buy="${p.id}">Buy Now</button>
+            </div>
+          </div>
+        </article>`).join('');
+      $$('#grid [data-add]').forEach(el=> el.addEventListener('click', ()=>{ addToCart(el.dataset.add); openCart(); }));
+      $$('#grid [data-buy]').forEach(el=> el.addEventListener('click', ()=>{ addToCart(el.dataset.buy); location.hash = '#checkout'; showSection('checkout'); }));
+      $$('#grid [data-open]').forEach(el=> el.addEventListener('click', ()=> openModal(el.dataset.open)));
+    }
+
+    const modal = $('#modal'); const mImg=$('#mImg'); const mName=$('#mName'); const mPrice=$('#mPrice'); const mDesc=$('#mDesc'); const mCc=$('#mCc'); const mBrake=$('#mBrake'); const mAdd=$('#mAdd'); const mBuy=$('#mGoCheckout'); let currentModalId=null;
+    function openModal(id){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; currentModalId=id; mImg.src=p.img; mName.textContent=p.name; mPrice.textContent=peso(p.price); mDesc.textContent=p.desc; mCc.textContent=p.cc+'cc'; mBrake.textContent=p.brake; modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); currentModalId=null; }
+    $('#closeModal').onclick = $('#x').onclick = closeModal; mAdd.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); } }; mBuy.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); showSection('checkout'); } };
+
+    const drawer=$('#drawer'); const cartBody=$('#cartBody'); const subtotalEl=$('#subtotal'); const totalEl=$('#total'); const cartCount=$('#cartCount');
+    function renderCart(){
+      if(!cart.length){ cartBody.innerHTML='<p class="muted">Your cart is empty.</p>'; subtotalEl.textContent=peso(0); totalEl.textContent=peso(0); return; }
+      cartBody.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); const line=p.price*qty; return `<div class="line"><img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="display:flex;justify-content:space-between;gap:8px"><strong>${p.name}</strong><strong>${peso(line)}</strong></div><div class="muted">${p.cc}cc • ${p.brake}</div><div style="display:flex;gap:.5rem;align-items:center;margin-top:.25rem"><div class="qty"><button aria-label="decrease" data-minus="${id}">−</button><span>${qty}</span><button aria-label="increase" data-plus="${id}">+</button></div><button class="btn small secondary" data-remove="${id}">Remove</button></div></div></div>`; }).join('');
+      $$('#cartBody [data-minus]').forEach(b=> b.onclick=()=> updateQty(b.dataset.minus,-1));
+      $$('#cartBody [data-plus]').forEach(b=> b.onclick=()=> updateQty(b.dataset.plus,1));
+      $$('#cartBody [data-remove]').forEach(b=> b.onclick=()=> removeFromCart(b.dataset.remove));
+      const sub=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty, 0); subtotalEl.textContent=peso(sub); totalEl.textContent=peso(sub); renderCartCount(); renderSummary();
+    }
+    function renderCartCount(){ const count=cart.reduce((s,i)=>s+i.qty,0); cartCount.style.display = count>0 ? 'inline-block' : 'none'; cartCount.textContent = count; }
+    function addToCart(id){ const line=cart.find(x=>x.id===id); if(line) line.qty++; else cart.push({id,qty:1}); saveCart(); renderCart(); }
+    function updateQty(id,delta){ const i=cart.findIndex(x=>x.id===id); if(i>-1){ cart[i].qty += delta; if(cart[i].qty<=0) cart.splice(i,1); saveCart(); renderCart(); } }
+    function removeFromCart(id){ cart = cart.filter(x=>x.id!==id); saveCart(); renderCart(); }
+    function openCart(){ drawer.classList.add('open'); } function closeCart(){ drawer.classList.remove('open'); }
+    $('#openCart').onclick=(e)=>{ e.preventDefault(); openCart(); }; $('#closeCart').onclick=$('#closeCartBtn').onclick=closeCart; $('#clearCart').onclick=()=>{ cart=[]; saveCart(); renderCart(); };
+
+    const checkoutSec=$('#checkoutSec'); const emptyCheckout=$('#emptyCheckout'); const checkoutWrap=$('#checkoutWrap'); const summary=$('#summary'); const summaryTotal=$('#summaryTotal');
+    function renderSummary(){ if(!summary) return; if(!cart.length){ summary.innerHTML='<p class="muted">No items yet.</p>'; summaryTotal.textContent=peso(0); return; } summary.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); return `<div style="display:flex;justify-content:space-between;margin:.25rem 0"><span>${qty}× ${p.name}</span><span>${peso(p.price*qty)}</span></div>` }).join(''); const total=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty,0); summaryTotal.textContent=peso(total); }
+    $('#checkoutForm').addEventListener('submit',(e)=>{ e.preventDefault(); if(!cart.length){ alert('Your cart is empty.'); return; } const orderNo='MPH-'+Math.random().toString(36).slice(2,8).toUpperCase(); $('#orderOk').style.display='block'; $('#orderOk').textContent=`✅ Order ${orderNo} placed! We emailed a confirmation to ${$('#email').value}.`; localStorage.removeItem(CART_KEY); cart=[]; renderCart(); renderSummary(); renderCartCount(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+    $('#contactForm').addEventListener('submit',(e)=>{ e.preventDefault(); $('#contactOk').style.display='block'; e.target.reset(); });
+
+    function showSection(which){ const map={home:'#home', catalog:'#catalogSec', contact:'#contactSec', checkout:'#checkoutSec'}; Object.values(map).forEach(sel=> $(sel).classList.add('hidden')); $(map[which]).classList.remove('hidden'); if(which==='checkout'){ if(cart.length){ emptyCheckout.style.display='none'; checkoutWrap.style.display='grid'; } else { emptyCheckout.style.display='block'; checkoutWrap.style.display='none'; } } if(which==='catalog'){ window.scrollTo({top:0,behavior:'smooth'}); } }
+    $$('[data-link]').forEach(a=> a.addEventListener('click',(e)=>{ const hash=(a.getAttribute('href')||'#').replace('#',''); if(['home','catalog','contact','checkout','cart'].includes(hash)){ e.preventDefault(); if(hash==='cart') openCart(); else showSection(hash); } }));
+    function route(){ const h=(location.hash||'#home').replace('#',''); if(['home','catalog','contact','checkout','cart'].includes(h)){ if(h==='cart') openCart(); else showSection(h); } else showSection('home'); }
+    window.addEventListener('hashchange', route);
+
+    renderCatalog(); renderCart(); renderSummary(); route();
+  </script>
+</body>
+</html>
