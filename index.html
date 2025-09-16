@@ -135,15 +135,15 @@
     <h2>Meet the Team</h2>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
       <article class="card" style="text-align:center">
-        <img src="drew-dalida.jpg" alt="Portrait of Drew Dalida" style="height:200px;object-fit:cover"/>
+        <img src="suzuki-gsx-8tt-97184.avif" alt="Portrait placeholder for Drew Sunga" style="height:200px;object-fit:cover"/>
         <div class="content">
-          <h3 style="margin:0">Drew Dalida</h3>
+          <h3 style="margin:0">Drew Sunga</h3>
           <p class="muted">Co-founder • Operations</p>
           <p class="muted">Keeps our inventory fresh and customer experience smooth from quote to delivery.</p>
         </div>
       </article>
       <article class="card" style="text-align:center">
-        <img src="junqit-chan.jpg" alt="Portrait of Junqit Chan" style="height:200px;object-fit:cover"/>
+        <img src="Triumph-Rocket-III-motorcycle-2005.webp" alt="Portrait placeholder for Junqit Chan" style="height:200px;object-fit:cover"/>
         <div class="content">
           <h3 style="margin:0">Junqit Chan</h3>
           <p class="muted">Co-founder • Growth</p>
@@ -151,6 +151,7 @@
         </div>
       </article>
     </div>
+    <p class="muted" style="margin-top:.75rem">Send their photos anytime and I’ll swap them in.</p>
   </section>
 
   <section id="contactSec" class="container hidden">
@@ -307,6 +308,7 @@
   </footer>
 
   <script>
+    // Gallery-enabled products
     const PRODUCTS = [
       {id:'katana', name:'Suzuki Katana', price:166900, cc:999, brake:'ABS + TC', images:['Suzuki-7.jpg'], desc:'Aggressive naked sport with 999cc inline-four power and suite of rider aids.'},
       {id:'gsx8tt', name:'Suzuki GSX-8TT', price:125900, cc:776, brake:'ABS + TC', images:['suzuki-gsx-8tt-97184.avif'], desc:'Adventure-ready twin with long-travel suspension and modern electronics.'},
@@ -316,7 +318,7 @@
     const peso = v => new Intl.NumberFormat('en-PH', {style:'currency', currency:'PHP'}).format(v);
     const $ = sel => document.querySelector(sel);
     const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const CART_KEY = 'motorph_cart_v7';
+    const CART_KEY = 'motorph_cart_gallery';
     let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     let discount = {code:null, amount:0};
 
@@ -349,6 +351,7 @@
       $$('#grid [data-compare]').forEach(el=> el.addEventListener('click', ()=> toggleCompare(el.dataset.compare)));
     }
 
+    // Modal gallery
     const modal = $('#modal'); const mImg=$('#mImg'); const mName=$('#mName'); const mPrice=$('#mPrice'); const mDesc=$('#mDesc'); const mCc=$('#mCc'); const mBrake=$('#mBrake'); const mAdd=$('#mAdd'); const mBuy=$('#mGoCheckout'); const mThumbs=$('#mThumbs'); let currentModalId=null, currentIdx=0;
     function openModal(id){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; currentModalId=id; currentIdx=0; mImg.src=p.images[0]; mName.textContent=p.name; mPrice.textContent=peso(p.price); mDesc.textContent=p.desc; mCc.textContent=p.cc+'cc'; mBrake.textContent=p.brake; mThumbs.innerHTML = p.images.map((src,i)=>`<img src="${src}" alt="${p.name} photo ${i+1}" data-idx="${i}" class="${i===0?'active':''}">`).join(''); $$('#mThumbs img').forEach(t=> t.addEventListener('click', ()=>{ currentIdx=+t.dataset.idx; mImg.src=p.images[currentIdx]; $$('#mThumbs img').forEach(x=>x.classList.remove('active')); t.classList.add('active'); })); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
     function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); currentModalId=null; }
@@ -390,7 +393,7 @@
     $('#checkoutForm').addEventListener('submit',(e)=>{ e.preventDefault(); if(!cart.length){ alert('Your cart is empty.'); return; } const orderNo='MPH-'+Math.random().toString(36).slice(2,8).toUpperCase(); $('#orderOk').style.display='block'; $('#orderOk').textContent=`✅ Order ${orderNo} placed! We emailed a confirmation to ${$('#email').value}.`; localStorage.removeItem(CART_KEY); cart=[]; discount={code:null,amount:0}; renderCart(); renderSummary(); renderCartCount(); window.scrollTo({top:0,behavior:'smooth'}); });
 
     // Compare feature
-    const compareTray = $('#compareTray'); const compareCount = $('#compareCount'); const compareTable = $('#compareTable'); const clearCompareBtn = $('#clearCompare'];
+    const compareTray = $('#compareTray'); const compareCount = $('#compareCount'); const compareTable = $('#compareTable'); const clearCompareBtn = $('#clearCompare');
     const compare = new Set();
     function toggleCompare(id){ if(compare.has(id)) compare.delete(id); else if(compare.size<3) compare.add(id); renderCompare(); }
     function renderCompare(){ 
@@ -413,8 +416,7 @@
     $('#contactForm').addEventListener('submit',(e)=>{ e.preventDefault(); $('#contactOk').style.display='block'; e.target.reset(); });
 
     function showSection(which){ const map={home:'#home', catalog:'#catalogSec', about:'#aboutSec', team:'#teamSec', contact:'#contactSec', checkout:'#checkoutSec'}; Object.values(map).forEach(sel=> $(sel).classList.add('hidden')); $(map[which]).classList.remove('hidden'); if(which==='checkout'){ if(cart.length){ emptyCheckout.style.display='none'; checkoutWrap.style.display='grid'; } else { emptyCheckout.style.display='block'; checkoutWrap.style.display='none'; } } if(which==='catalog'){ window.scrollTo({top:0,behavior:'smooth'}); } }
-    const links=[...document.querySelectorAll('[data-link]')];
-    links.forEach(a=> a.addEventListener('click',(e)=>{ const hash=(a.getAttribute('href')||'#').replace('#',''); if(['home','catalog','about','team','contact','checkout','cart'].includes(hash)){ e.preventDefault(); if(hash==='cart') openCart(); else showSection(hash); } }));
+    $$('[data-link]').forEach(a=> a.addEventListener('click',(e)=>{ const hash=(a.getAttribute('href')||'#').replace('#',''); if(['home','catalog','about','team','contact','checkout','cart'].includes(hash)){ e.preventDefault(); if(hash==='cart') openCart(); else showSection(hash); } }));
     function route(){ const h=(location.hash||'#home').replace('#',''); if(['home','catalog','about','team','contact','checkout','cart'].includes(h)){ if(h==='cart') openCart(); else showSection(h); } else showSection('home'); }
     window.addEventListener('hashchange', route);
 
