@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MotorPH — The Filipino’s Choice</title>
+  <title>Team • MotorPH</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,29 +21,27 @@
   </div>
 </header>
 
-  <section class="hero container" id="home">
-    <div>
-      <span class="pill">The Filipino’s Choice</span>
-      <h1>Reliable scooters for the everyday Filipino</h1>
-      <p class="muted">Affordable cash prices and flexible installment terms. Find your perfect ride for Metro Manila traffic, weekend errands, and family transport.</p>
-      <div style="display:flex;gap:.6rem;margin-top:1rem">
-        <a class="btn" href="motorcycles.html">Browse Models</a>
-        <a class="btn secondary" href="contact.html">Talk to Sales</a>
-      </div>
-    </div>
-    <div>
-      <img src="Suzuki-7.jpg" alt="Suzuki Katana motorcycle parked on a quiet street" style="width:100%;border-radius:1rem;box-shadow:0 10px 28px rgba(0,0,0,.15)">
-    </div>
-  </section>
-
   <section class="container">
-    <h2>Popular Items</h2>
-    <div class="grid" id="grid"></div>
-    <div style="margin-top:1rem">
-      <a class="btn secondary" href="motorcycles.html">See all motorcycles</a>
+    <h1>Meet the Team</h1>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <article class="card" style="text-align:center">
+        <img src="drew-dalida.webp" class="team-photo" alt="Portrait of Drew Dalida">
+        <div class="content">
+          <h3 style="margin:0">Drew Dalida</h3>
+          <p class="muted">Co-founder • Operations</p>
+          <p class="muted">Keeps our inventory fresh and customer experience smooth from quote to delivery.</p>
+        </div>
+      </article>
+      <article class="card" style="text-align:center">
+        <img src="junqit-chan.webp" class="team-photo" alt="Portrait of Junqit Chan">
+        <div class="content">
+          <h3 style="margin:0">Junqit Chan</h3>
+          <p class="muted">Co-founder • Growth</p>
+          <p class="muted">Leads brand, partnerships, and digital—making MotorPH the Filipino’s first choice.</p>
+        </div>
+      </article>
     </div>
   </section>
-
   
 <div id="drawer" class="drawer" aria-hidden="true">
   <div class="overlay" id="closeCart"></div>
@@ -90,8 +88,5 @@
 </footer>
 
   <script src="app.js"></script>
-  <script>
-    catalogGrid('#grid');
-  </script>
 </body>
 </html>

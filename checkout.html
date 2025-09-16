@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout • MotorPH</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+<header class="site-header">
+  <div class="nav-row">
+    <div class="logo">MotorPH</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="motorcycles.html">Motorcycles</a>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" id="openCart" class="cart-pill" title="View cart">🛒<span id="cartCount" class="cart-count">0</span></a>
+    </nav>
+  </div>
+</header>
+
+  <section class="container">
+    <h1>Checkout</h1>
+    <div id="emptyCheckout" class="notice" style="display:none">Your cart is empty. Add a motorcycle from the <a href="motorcycles.html">catalog</a>.</div>
+    <div id="checkoutWrap" style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem">
+      <form id="checkoutForm">
+        <h3>Customer</h3>
+        <div class="grid-2">
+          <div><label>Full Name</label><input id="name" required></div>
+          <div><label>Email</label><input id="email" type="email" required></div>
+        </div>
+        <div class="grid-2">
+          <div><label>Phone</label><input id="phone" required></div>
+          <div><label>Payment Method</label>
+            <select id="payment"><option>Cash on Delivery</option><option>GCash</option><option>Bank Transfer</option></select>
+          </div>
+        </div>
+        <h3>Shipping Address</h3>
+        <label>Street</label><input id="street" required>
+        <div class="grid-2">
+          <div><label>City / Municipality</label><input id="city" required></div>
+          <div><label>Province</label><input id="province" required></div>
+        </div>
+        <div class="grid-2">
+          <div><label>ZIP</label><input id="zip" required></div>
+          <div><label>Notes (optional)</label><input id="notes" placeholder="Gate instructions, landmark, etc."></div>
+        </div>
+        <div class="notice" style="margin:.75rem 0">Demo only: No real payment is processed. You’ll see a confirmation screen with a generated order number.</div>
+        <button class="btn" type="submit">Place Order</button>
+        <div id="orderOk" style="display:none;margin-top:12px" class="success"></div>
+      </form>
+      <aside>
+        <div style="background:#fff;border:1px solid #eee;border-radius:1rem;padding:1rem">
+          <h3 style="margin-top:0">Order Summary</h3>
+          <div id="summary"></div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem">
+            <input id="codeChk" placeholder="Discount code (e.g., MOTORPH10)" style="flex:1">
+            <button class="btn secondary" id="applyCodeChk" type="button">Apply</button>
+          </div>
+          <div style="font-size:.9rem;margin:.5rem 0" class="muted" id="discInfo">Use MOTORPH10 for 10% OFF</div>
+          <div style="display:flex;justify-content:space-between;border-top:1px solid #eee;margin-top:.5rem;padding-top:.5rem">
+            <strong>Total</strong>
+            <strong id="summaryTotal">₱0.00</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+  
+<div id="drawer" class="drawer" aria-hidden="true">
+  <div class="overlay" id="closeCart"></div>
+  <div class="panel">
+    <header style="display:flex;justify-content:space-between;align-items:center">
+      <strong>🛒 Your Cart</strong>
+      <button class="btn small secondary" id="closeCartBtn">Close</button>
+    </header>
+    <div id="cartBody" class="body"></div>
+    <div class="summary">
+      <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
+      <div class="row"><span>Discount (<span id="discLabel">None</span>)</span><strong id="discount">− ₱0.00</strong></div>
+      <div class="row"><span>Total</span><strong id="total">₱0.00</strong></div>
+      <div style="display:flex;gap:.5rem;margin:.5rem 0">
+        <input id="code" placeholder="Discount code (e.g., MOTORPH10)" style="flex:1;padding:.6rem .7rem;border:1px solid #e5e7eb;border-radius:.6rem"/>
+        <button class="btn secondary" id="applyCode">Apply</button>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.5rem">
+        <button class="btn secondary" id="clearCart">Clear</button>
+        <a class="btn" href="checkout.html">Checkout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<footer class="site-footer">
+  <div class="row">
+    <div>
+      <h4>Office Hours</h4>
+      <p>8:30 AM – 5:30 PM, Monday to Saturday</p>
+    </div>
+    <div>
+      <h4>Address</h4>
+      <p>7 Jupiter Avenue cor. F. Sandoval Jr., Bagong Nayon, Quezon City</p>
+    </div>
+    <div>
+      <h4>Sales</h4>
+      <p>(028) 911-5071 / 911-5072 / 911-5073</p>
+      <p>Email: corporate@motorph.com</p>
+    </div>
+  </div>
+  <p class="copy">© 2024 MotorPH. All rights reserved.</p>
+</footer>
+
+  <script src="app.js"></script>
+  <script>initCheckout();</script>
+</body>
+</html>

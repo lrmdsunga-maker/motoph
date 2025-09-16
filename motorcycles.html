@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MotorPH — The Filipino’s Choice</title>
+  <title>Motorcycles • MotorPH</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,28 +21,30 @@
   </div>
 </header>
 
-  <section class="hero container" id="home">
-    <div>
-      <span class="pill">The Filipino’s Choice</span>
-      <h1>Reliable scooters for the everyday Filipino</h1>
-      <p class="muted">Affordable cash prices and flexible installment terms. Find your perfect ride for Metro Manila traffic, weekend errands, and family transport.</p>
-      <div style="display:flex;gap:.6rem;margin-top:1rem">
-        <a class="btn" href="motorcycles.html">Browse Models</a>
-        <a class="btn secondary" href="contact.html">Talk to Sales</a>
-      </div>
+  <section class="container" id="catalog">
+    <h1>All Motorcycles</h1>
+    <div class="filters">
+      <input id="search" placeholder="Search model… (e.g., Katana)">
+      <select id="sort">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low → High</option>
+        <option value="high">Price: High → Low</option>
+      </select>
     </div>
-    <div>
-      <img src="Suzuki-7.jpg" alt="Suzuki Katana motorcycle parked on a quiet street" style="width:100%;border-radius:1rem;box-shadow:0 10px 28px rgba(0,0,0,.15)">
-    </div>
+    <div class="grid" id="grid"></div>
   </section>
 
-  <section class="container">
-    <h2>Popular Items</h2>
-    <div class="grid" id="grid"></div>
-    <div style="margin-top:1rem">
-      <a class="btn secondary" href="motorcycles.html">See all motorcycles</a>
+  <div id="compareTray">
+    <div id="compareWrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <strong>Compare Models (<span id="compareCount">0</span>/3)</strong>
+        <button class="btn small secondary" onclick="clearCompare()">Clear</button>
+      </div>
+      <div style="overflow:auto">
+        <table id="compareTable"></table>
+      </div>
     </div>
-  </section>
+  </div>
 
   
 <div id="drawer" class="drawer" aria-hidden="true">
@@ -90,8 +92,6 @@
 </footer>
 
   <script src="app.js"></script>
-  <script>
-    catalogGrid('#grid');
-  </script>
+  <script>catalogGrid('#grid');</script>
 </body>
 </html>
