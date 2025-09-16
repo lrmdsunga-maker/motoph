@@ -50,15 +50,21 @@
     .modal{position:fixed;inset:0;display:none}
     .modal.show{display:grid;place-items:center}
     .modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-    .modal .card{position:relative;max-width:min(920px,95vw);display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:1rem;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.2)}
-    .modal .card img{height:100%;max-height:520px;object-fit:cover}
+    .modal .card{position:relative;max-width:min(980px,96vw);display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:1rem;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+    .modal .card img#mImg{height:100%;max-height:520px;object-fit:cover}
     .close-x{position:absolute;top:10px;right:10px;background:#fff;border-radius:999px;border:1px solid #eee;width:32px;height:32px;display:grid;place-items:center;cursor:pointer}
+    .thumbs{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem}
+    .thumbs img{width:64px;height:48px;object-fit:cover;border:2px solid transparent;border-radius:.4rem;cursor:pointer}
+    .thumbs img.active{border-color:#111827}
     section.hidden{display:none}
     form label{display:block;font-size:.9rem;font-weight:700;margin:.5rem 0 .25rem}
     form input, form select, form textarea{width:100%;padding:.6rem .7rem;border:1px solid #e5e7eb;border-radius:.6rem}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
     .notice{background:#fef3c7;border:1px solid #f59e0b;color:#7c2d12;border-radius:.75rem;padding:.6rem .8rem;font-size:.9rem}
     .success{background:#ecfdf5;border:1px solid #10b981;color:#065f46;border-radius:.75rem;padding:.6rem .8rem;font-size:.95rem}
+    #compareTray{position:sticky;bottom:0;background:#fff;border-top:1px solid #eee;box-shadow:0 -4px 20px rgba(0,0,0,.06);display:none}
+    #compareWrap{max-width:1200px;margin:auto;padding:1rem 1.25rem;overflow:auto}
+    #compareTable th, #compareTable td{padding:.5rem;border-bottom:1px solid #f1f5f9;text-align:left;white-space:nowrap}
   </style>
 </head>
 <body>
@@ -68,6 +74,8 @@
       <nav>
         <a href="#home" data-link>Home</a>
         <a href="#catalog" data-link>Motorcycles</a>
+        <a href="#about" data-link>About</a>
+        <a href="#team" data-link>Team</a>
         <a href="#contact" data-link>Contact</a>
         <a href="#cart" class="cart-btn" id="openCart" title="View cart">🛒<span id="cartCount" class="cart-count" style="display:none">0</span></a>
       </nav>
@@ -85,7 +93,7 @@
       </div>
     </div>
     <div>
-      <img src="Suzuki-7.jpg" alt="Suzuki Katana" style="width:100%;border-radius:1rem;box-shadow:0 10px 28px rgba(0,0,0,.15)"/>
+      <img src="Suzuki-7.jpg" alt="Suzuki Katana motorcycle parked on a quiet street" style="width:100%;border-radius:1rem;box-shadow:0 10px 28px rgba(0,0,0,.15)"/>
     </div>
   </section>
 
@@ -101,6 +109,47 @@
         </select>
       </div>
       <div id="grid" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="aboutSec" class="container hidden">
+    <h2>About MotorPH</h2>
+    <p class="muted">MotorPH was founded in 2020 to make two-wheel mobility more accessible to Filipinos. We focus on dependable scooters, transparent pricing, and flexible financing for city commuters and families.</p>
+    <div class="grid-2" style="margin-top:1rem">
+      <div>
+        <h3>Our Promise</h3>
+        <ul class="muted">
+          <li>Clear pricing and honest specs</li>
+          <li>Multiple payment options: cash, bank financing, GCash</li>
+          <li>Fast, friendly support before and after purchase</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Where We’re Headed</h3>
+        <p class="muted">From online beginnings, we’re expanding with service partners and planned showrooms in major cities across the Philippines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="teamSec" class="container hidden">
+    <h2>Meet the Team</h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <article class="card" style="text-align:center">
+        <img src="drew-dalida.jpg" alt="Portrait of Drew Dalida" style="height:200px;object-fit:cover"/>
+        <div class="content">
+          <h3 style="margin:0">Drew Dalida</h3>
+          <p class="muted">Co-founder • Operations</p>
+          <p class="muted">Keeps our inventory fresh and customer experience smooth from quote to delivery.</p>
+        </div>
+      </article>
+      <article class="card" style="text-align:center">
+        <img src="junqit-chan.jpg" alt="Portrait of Junqit Chan" style="height:200px;object-fit:cover"/>
+        <div class="content">
+          <h3 style="margin:0">Junqit Chan</h3>
+          <p class="muted">Co-founder • Growth</p>
+          <p class="muted">Leads brand, partnerships, and digital—making MotorPH the Filipino’s first choice.</p>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -125,7 +174,7 @@
         </div>
         <div>
           <label for="csubject">Subject</label>
-          <input id="csubject" required placeholder="Inquiry about PCX160" />
+          <input id="csubject" required placeholder="Inquiry about Katana" />
         </div>
       </div>
       <label for="cmsg">Message</label>
@@ -146,8 +195,12 @@
       <div id="cartBody" class="body"></div>
       <div class="summary">
         <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
-        <div class="row"><span>Shipping</span><span class="muted">Calculated at checkout</span></div>
+        <div class="row"><span>Discount (<span id="discLabel">None</span>)</span><strong id="discount">− ₱0.00</strong></div>
         <div class="row"><span>Total</span><strong id="total">₱0.00</strong></div>
+        <div style="display:flex;gap:.5rem;margin:.5rem 0">
+          <input id="code" placeholder="Discount code (e.g., MOTORPH10)" style="flex:1;padding:.6rem .7rem;border:1px solid #e5e7eb;border-radius:.6rem"/>
+          <button class="btn secondary" id="applyCode">Apply</button>
+        </div>
         <div style="display:flex;gap:.5rem;margin-top:.5rem">
           <button class="btn secondary" id="clearCart">Clear</button>
           <a class="btn" href="#checkout" id="goCheckout" data-link>Checkout</a>
@@ -194,6 +247,7 @@
             <strong>Total</strong>
             <strong id="summaryTotal">₱0.00</strong>
           </div>
+          <div class="muted" style="margin-top:.5rem">Use code <strong>MOTORPH10</strong> to get <strong>10% OFF</strong> your order.</div>
         </div>
       </aside>
     </div>
@@ -202,7 +256,7 @@
   <div id="modal" class="modal" aria-hidden="true">
     <div class="overlay" id="closeModal"></div>
     <div class="card">
-      <img id="mImg" alt="Product"/>
+      <img id="mImg" alt="Selected motorcycle image"/>
       <div style="padding:1.25rem;display:flex;flex-direction:column;gap:.5rem">
         <div class="close-x" id="x">✕</div>
         <h3 id="mName" style="margin:0"></h3>
@@ -212,10 +266,23 @@
           <span class="muted">Displacement:</span> <strong id="mCc"></strong>
           <span class="muted" style="margin-left:1rem">Brakes:</span> <strong id="mBrake"></strong>
         </div>
+        <div class="thumbs" id="mThumbs"></div>
         <div style="display:flex;gap:.5rem;margin-top:auto">
           <button class="btn" id="mAdd">Add to Cart</button>
           <button class="btn secondary" id="mGoCheckout">Buy Now</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="compareTray">
+    <div id="compareWrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <strong>Compare Models (<span id="compareCount">0</span>/3)</strong>
+        <button class="btn small secondary" id="clearCompare">Clear</button>
+      </div>
+      <div style="overflow:auto">
+        <table id="compareTable"></table>
       </div>
     </div>
   </div>
@@ -232,7 +299,7 @@
       </div>
       <div>
         <h4>Sales</h4>
-        <p>(028) 911‑5071 / 911‑5072 / 911‑5073</p>
+        <p>(028) 911-5071 / 911-5072 / 911-5073</p>
         <p>Email: corporate@motorph.com</p>
       </div>
     </div>
@@ -241,18 +308,20 @@
 
   <script>
     const PRODUCTS = [
-      {id:'katana', name:'Suzuki Katana', price:166900, cc:999, brake:'ABS + TC', img:'Suzuki-7.jpg', desc:'Aggressive naked sport with 999cc inline-four power and suite of rider aids.'},
-      {id:'gsx8tt', name:'Suzuki GSX-8TT', price:125900, cc:776, brake:'ABS + TC', img:'suzuki-gsx-8tt-97184.avif', desc:'Adventure-ready twin with long-travel suspension and modern electronics.'},
-      {id:'rocket3', name:'Triumph Rocket III', price:149900, cc:2294, brake:'ABS', img:'Triumph-Rocket-III-motorcycle-2005.webp', desc:'Legendary cruiser torque with premium finishing and comfort.'},
-      {id:'custom', name:'Custom Model', price:131900, cc:160, brake:'ABS/CBS', img:'U7NE4JOSA757H7EYU44LJEESSA.avif', desc:'Distinctive design with city-smart efficiency and comfort.'}
+      {id:'katana', name:'Suzuki Katana', price:166900, cc:999, brake:'ABS + TC', images:['Suzuki-7.jpg'], desc:'Aggressive naked sport with 999cc inline-four power and suite of rider aids.'},
+      {id:'gsx8tt', name:'Suzuki GSX-8TT', price:125900, cc:776, brake:'ABS + TC', images:['suzuki-gsx-8tt-97184.avif'], desc:'Adventure-ready twin with long-travel suspension and modern electronics.'},
+      {id:'rocket3', name:'Triumph Rocket III', price:149900, cc:2294, brake:'ABS', images:['Triumph-Rocket-III-motorcycle-2005.webp'], desc:'Legendary cruiser torque with premium finishing and comfort.'},
+      {id:'city160', name:'City Commuter 160', price:131900, cc:160, brake:'ABS/CBS', images:['U7NE4JOSA757H7EYU44LJEESSA.avif'], desc:'Refined everyday riding with comfort and efficiency.'}
     ];
     const peso = v => new Intl.NumberFormat('en-PH', {style:'currency', currency:'PHP'}).format(v);
     const $ = sel => document.querySelector(sel);
     const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const CART_KEY = 'motorph_cart_v1';
+    const CART_KEY = 'motorph_cart_v7';
     let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    let discount = {code:null, amount:0};
 
     function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCartCount(); }
+
     const grid = $('#grid'); const search = $('#search'); const sortSel = $('#sort');
     function renderCatalog(){
       let items = PRODUCTS.slice();
@@ -262,7 +331,7 @@
       if(sortSel.value==='high') items.sort((a,b)=>b.price-a.price);
       grid.innerHTML = items.map(p=> `
         <article class="card">
-          <img src="${p.img}" alt="${p.name}" data-open="${p.id}"/>
+          <img src="${p.images[0]}" alt="${p.name} main photo" data-open="${p.id}"/>
           <div class="content">
             <h3 style="margin:0">${p.name}</h3>
             <div class="muted">${p.cc}cc • ${p.brake}</div>
@@ -270,44 +339,83 @@
             <div style="display:flex;gap:.5rem;margin-top:auto">
               <button class="btn small" data-add="${p.id}">Add to Cart</button>
               <button class="btn small secondary" data-buy="${p.id}">Buy Now</button>
+              <button class="btn small secondary" data-compare="${p.id}">Compare</button>
             </div>
           </div>
         </article>`).join('');
       $$('#grid [data-add]').forEach(el=> el.addEventListener('click', ()=>{ addToCart(el.dataset.add); openCart(); }));
       $$('#grid [data-buy]').forEach(el=> el.addEventListener('click', ()=>{ addToCart(el.dataset.buy); location.hash = '#checkout'; showSection('checkout'); }));
       $$('#grid [data-open]').forEach(el=> el.addEventListener('click', ()=> openModal(el.dataset.open)));
+      $$('#grid [data-compare]').forEach(el=> el.addEventListener('click', ()=> toggleCompare(el.dataset.compare)));
     }
 
-    const modal = $('#modal'); const mImg=$('#mImg'); const mName=$('#mName'); const mPrice=$('#mPrice'); const mDesc=$('#mDesc'); const mCc=$('#mCc'); const mBrake=$('#mBrake'); const mAdd=$('#mAdd'); const mBuy=$('#mGoCheckout'); let currentModalId=null;
-    function openModal(id){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; currentModalId=id; mImg.src=p.img; mName.textContent=p.name; mPrice.textContent=peso(p.price); mDesc.textContent=p.desc; mCc.textContent=p.cc+'cc'; mBrake.textContent=p.brake; modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+    const modal = $('#modal'); const mImg=$('#mImg'); const mName=$('#mName'); const mPrice=$('#mPrice'); const mDesc=$('#mDesc'); const mCc=$('#mCc'); const mBrake=$('#mBrake'); const mAdd=$('#mAdd'); const mBuy=$('#mGoCheckout'); const mThumbs=$('#mThumbs'); let currentModalId=null, currentIdx=0;
+    function openModal(id){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; currentModalId=id; currentIdx=0; mImg.src=p.images[0]; mName.textContent=p.name; mPrice.textContent=peso(p.price); mDesc.textContent=p.desc; mCc.textContent=p.cc+'cc'; mBrake.textContent=p.brake; mThumbs.innerHTML = p.images.map((src,i)=>`<img src="${src}" alt="${p.name} photo ${i+1}" data-idx="${i}" class="${i===0?'active':''}">`).join(''); $$('#mThumbs img').forEach(t=> t.addEventListener('click', ()=>{ currentIdx=+t.dataset.idx; mImg.src=p.images[currentIdx]; $$('#mThumbs img').forEach(x=>x.classList.remove('active')); t.classList.add('active'); })); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
     function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); currentModalId=null; }
-    $('#closeModal').onclick = $('#x').onclick = closeModal; mAdd.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); } }; mBuy.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); showSection('checkout'); } };
+    $('#closeModal').onclick = $('#x').onclick = closeModal; 
+    mAdd.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); } };
+    mBuy.onclick=()=>{ if(currentModalId){ addToCart(currentModalId); showSection('checkout'); } };
 
-    const drawer=$('#drawer'); const cartBody=$('#cartBody'); const subtotalEl=$('#subtotal'); const totalEl=$('#total'); const cartCount=$('#cartCount');
-    function renderCart(){
-      if(!cart.length){ cartBody.innerHTML='<p class="muted">Your cart is empty.</p>'; subtotalEl.textContent=peso(0); totalEl.textContent=peso(0); return; }
-      cartBody.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); const line=p.price*qty; return `<div class="line"><img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="display:flex;justify-content:space-between;gap:8px"><strong>${p.name}</strong><strong>${peso(line)}</strong></div><div class="muted">${p.cc}cc • ${p.brake}</div><div style="display:flex;gap:.5rem;align-items:center;margin-top:.25rem"><div class="qty"><button aria-label="decrease" data-minus="${id}">−</button><span>${qty}</span><button aria-label="increase" data-plus="${id}">+</button></div><button class="btn small secondary" data-remove="${id}">Remove</button></div></div></div>`; }).join('');
+    const drawer=$('#drawer'); const cartBody=$('#cartBody'); const subtotalEl=$('#subtotal'); const totalEl=$('#total'); const discountEl=$('#discount'); const discLabel=$('#discLabel'); const cartCount=$('#cartCount');
+    function renderCart(){ 
+      if(!cart.length){ cartBody.innerHTML='<p class="muted">Your cart is empty.</p>'; subtotalEl.textContent=peso(0); totalEl.textContent=peso(0); discountEl.textContent='− ₱0.00'; discLabel.textContent='None'; return; }
+      cartBody.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); const line=p.price*qty; return `<div class="line"><img src="${p.images[0]}" alt="${p.name} thumbnail"><div style="flex:1"><div style="display:flex;justify-content:space-between;gap:8px"><strong>${p.name}</strong><strong>${peso(line)}</strong></div><div class="muted">${p.cc}cc • ${p.brake}</div><div style="display:flex;gap:.5rem;align-items:center;margin-top:.25rem"><div class="qty"><button aria-label="decrease" data-minus="${id}">−</button><span>${qty}</span><button aria-label="increase" data-plus="${id}">+</button></div><button class="btn small secondary" data-remove="${id}">Remove</button></div></div></div>`; }).join('');
       $$('#cartBody [data-minus]').forEach(b=> b.onclick=()=> updateQty(b.dataset.minus,-1));
       $$('#cartBody [data-plus]').forEach(b=> b.onclick=()=> updateQty(b.dataset.plus,1));
       $$('#cartBody [data-remove]').forEach(b=> b.onclick=()=> removeFromCart(b.dataset.remove));
-      const sub=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty, 0); subtotalEl.textContent=peso(sub); totalEl.textContent=peso(sub); renderCartCount(); renderSummary();
+      const sub=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty, 0); 
+      const disc = discount.amount || 0;
+      subtotalEl.textContent=peso(sub); discountEl.textContent='− ' + peso(disc); totalEl.textContent=peso(Math.max(0, sub-disc)); renderCartCount(); renderSummary();
     }
     function renderCartCount(){ const count=cart.reduce((s,i)=>s+i.qty,0); cartCount.style.display = count>0 ? 'inline-block' : 'none'; cartCount.textContent = count; }
     function addToCart(id){ const line=cart.find(x=>x.id===id); if(line) line.qty++; else cart.push({id,qty:1}); saveCart(); renderCart(); }
     function updateQty(id,delta){ const i=cart.findIndex(x=>x.id===id); if(i>-1){ cart[i].qty += delta; if(cart[i].qty<=0) cart.splice(i,1); saveCart(); renderCart(); } }
     function removeFromCart(id){ cart = cart.filter(x=>x.id!==id); saveCart(); renderCart(); }
     function openCart(){ drawer.classList.add('open'); } function closeCart(){ drawer.classList.remove('open'); }
-    $('#openCart').onclick=(e)=>{ e.preventDefault(); openCart(); }; $('#closeCart').onclick=$('#closeCartBtn').onclick=closeCart; $('#clearCart').onclick=()=>{ cart=[]; saveCart(); renderCart(); };
+    $('#openCart').onclick=(e)=>{ e.preventDefault(); openCart(); }; $('#closeCart').onclick=$('#closeCartBtn').onclick=closeCart; $('#clearCart').onclick=()=>{ cart=[]; discount={code:null,amount:0}; saveCart(); renderCart(); };
+
+    const codeInput = $('#code'); const applyBtn = $('#applyCode');
+    function applyCode(){ 
+      const c = (codeInput.value||'').trim().toUpperCase();
+      const subtotal = cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty, 0);
+      if(!subtotal){ alert('Add items to cart first.'); return; }
+      if(c==='MOTORPH10'){ discount={code:c, amount: Math.round(subtotal*0.10)}; discLabel.textContent='MOTORPH10 (10%)'; }
+      else { alert('Invalid code. Try MOTORPH10'); return; }
+      renderCart(); renderSummary();
+    }
+    applyBtn.onclick = applyCode;
 
     const checkoutSec=$('#checkoutSec'); const emptyCheckout=$('#emptyCheckout'); const checkoutWrap=$('#checkoutWrap'); const summary=$('#summary'); const summaryTotal=$('#summaryTotal');
-    function renderSummary(){ if(!summary) return; if(!cart.length){ summary.innerHTML='<p class="muted">No items yet.</p>'; summaryTotal.textContent=peso(0); return; } summary.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); return `<div style="display:flex;justify-content:space-between;margin:.25rem 0"><span>${qty}× ${p.name}</span><span>${peso(p.price*qty)}</span></div>` }).join(''); const total=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty,0); summaryTotal.textContent=peso(total); }
-    $('#checkoutForm').addEventListener('submit',(e)=>{ e.preventDefault(); if(!cart.length){ alert('Your cart is empty.'); return; } const orderNo='MPH-'+Math.random().toString(36).slice(2,8).toUpperCase(); $('#orderOk').style.display='block'; $('#orderOk').textContent=`✅ Order ${orderNo} placed! We emailed a confirmation to ${$('#email').value}.`; localStorage.removeItem(CART_KEY); cart=[]; renderCart(); renderSummary(); renderCartCount(); window.scrollTo({top:0,behavior:'smooth'}); });
+    function renderSummary(){ if(!summary) return; if(!cart.length){ summary.innerHTML='<p class="muted">No items yet.</p>'; summaryTotal.textContent=peso(0); return; } summary.innerHTML = cart.map(({id,qty})=>{ const p=PRODUCTS.find(x=>x.id===id); return `<div style="display:flex;justify-content:space-between;margin:.25rem 0"><span>${qty}× ${p.name}</span><span>${peso(p.price*qty)}</span></div>` }).join(''); const total=cart.reduce((s,{id,qty})=> s + PRODUCTS.find(p=>p.id===id).price*qty,0) - (discount.amount||0); summaryTotal.textContent=peso(Math.max(0,total)); }
+    $('#checkoutForm').addEventListener('submit',(e)=>{ e.preventDefault(); if(!cart.length){ alert('Your cart is empty.'); return; } const orderNo='MPH-'+Math.random().toString(36).slice(2,8).toUpperCase(); $('#orderOk').style.display='block'; $('#orderOk').textContent=`✅ Order ${orderNo} placed! We emailed a confirmation to ${$('#email').value}.`; localStorage.removeItem(CART_KEY); cart=[]; discount={code:null,amount:0}; renderCart(); renderSummary(); renderCartCount(); window.scrollTo({top:0,behavior:'smooth'}); });
 
+    // Compare feature
+    const compareTray = $('#compareTray'); const compareCount = $('#compareCount'); const compareTable = $('#compareTable'); const clearCompareBtn = $('#clearCompare'];
+    const compare = new Set();
+    function toggleCompare(id){ if(compare.has(id)) compare.delete(id); else if(compare.size<3) compare.add(id); renderCompare(); }
+    function renderCompare(){ 
+      compareCount.textContent = compare.size;
+      if(compare.size===0){ compareTray.style.display='none'; compareTable.innerHTML=''; return; }
+      compareTray.style.display='block';
+      const items = PRODUCTS.filter(p=> compare.has(p.id));
+      const head = '<tr><th>Spec</th>' + items.map(p=> `<th>${p.name}</th>`).join('') + '</tr>';
+      const rows = [
+        ['Price', ...items.map(p=> peso(p.price))],
+        ['Displacement', ...items.map(p=> p.cc + 'cc')],
+        ['Brakes', ...items.map(p=> p.brake)],
+        ['Summary', ...items.map(p=> p.desc)],
+      ].map(r=> '<tr>' + r.map((c,i)=> i?`<td>${c}</td>`:`<th>${c}</th>`).join('') + '</tr>').join('');
+      compareTable.innerHTML = head + rows;
+    }
+    clearCompareBtn.onclick = ()=>{ compare.clear(); renderCompare(); };
+
+    // Contact form (mock)
     $('#contactForm').addEventListener('submit',(e)=>{ e.preventDefault(); $('#contactOk').style.display='block'; e.target.reset(); });
 
-    function showSection(which){ const map={home:'#home', catalog:'#catalogSec', contact:'#contactSec', checkout:'#checkoutSec'}; Object.values(map).forEach(sel=> $(sel).classList.add('hidden')); $(map[which]).classList.remove('hidden'); if(which==='checkout'){ if(cart.length){ emptyCheckout.style.display='none'; checkoutWrap.style.display='grid'; } else { emptyCheckout.style.display='block'; checkoutWrap.style.display='none'; } } if(which==='catalog'){ window.scrollTo({top:0,behavior:'smooth'}); } }
-    $$('[data-link]').forEach(a=> a.addEventListener('click',(e)=>{ const hash=(a.getAttribute('href')||'#').replace('#',''); if(['home','catalog','contact','checkout','cart'].includes(hash)){ e.preventDefault(); if(hash==='cart') openCart(); else showSection(hash); } }));
-    function route(){ const h=(location.hash||'#home').replace('#',''); if(['home','catalog','contact','checkout','cart'].includes(h)){ if(h==='cart') openCart(); else showSection(h); } else showSection('home'); }
+    function showSection(which){ const map={home:'#home', catalog:'#catalogSec', about:'#aboutSec', team:'#teamSec', contact:'#contactSec', checkout:'#checkoutSec'}; Object.values(map).forEach(sel=> $(sel).classList.add('hidden')); $(map[which]).classList.remove('hidden'); if(which==='checkout'){ if(cart.length){ emptyCheckout.style.display='none'; checkoutWrap.style.display='grid'; } else { emptyCheckout.style.display='block'; checkoutWrap.style.display='none'; } } if(which==='catalog'){ window.scrollTo({top:0,behavior:'smooth'}); } }
+    const links=[...document.querySelectorAll('[data-link]')];
+    links.forEach(a=> a.addEventListener('click',(e)=>{ const hash=(a.getAttribute('href')||'#').replace('#',''); if(['home','catalog','about','team','contact','checkout','cart'].includes(hash)){ e.preventDefault(); if(hash==='cart') openCart(); else showSection(hash); } }));
+    function route(){ const h=(location.hash||'#home').replace('#',''); if(['home','catalog','about','team','contact','checkout','cart'].includes(h)){ if(h==='cart') openCart(); else showSection(h); } else showSection('home'); }
     window.addEventListener('hashchange', route);
 
     renderCatalog(); renderCart(); renderSummary(); route();
